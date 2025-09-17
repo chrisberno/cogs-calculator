@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPaaS Pricing Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>CPaaS Platform Pricing Calculator</h1>
+            <p>Calculate your monthly CPaaS platform costs with real-time pricing</p>
+        </header>
+
+        <main class="main-content">
+            <div class="calculator-grid">
+                <div class="input-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2>Configuration</h2>
+                        </div>
+                        <div class="card__body">
+                            <!-- Billing Model Selection -->
+                            <div class="form-group">
+                                <label class="form-label">Billing Model</label>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="billingModel" value="hourly" checked>
+                                        <span class="radio-label">Per Active User Hour ($1.00/hour)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="billingModel" value="named">
+                                        <span class="radio-label">Per Named User ($150.00/month)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Agent Configuration -->
+                            <div class="form-group">
+                                <label for="agents" class="form-label">
+                                    Number of Agents
+                                    <span class="tooltip" data-tooltip="Total number of agents using Twilio Flex">ⓘ</span>
+                                </label>
+                                <input type="number" id="agents" class="form-control" min="1" max="1000" value="10">
+                            </div>
+
+                            <div class="form-group" id="hoursGroup">
+                                <label for="hours" class="form-label">
+                                    Hours per Agent per Month
+                                    <span class="tooltip" data-tooltip="Average hours each agent works per month (max 744)">ⓘ</span>
+                                </label>
+                                <input type="number" id="hours" class="form-control" min="1" max="744" value="160">
+                            </div>
+
+                            <!-- Channel Usage -->
+                            <h3>Channel Usage per Month</h3>
+                            
+                            <div class="form-group">
+                                <label for="inboundVoice" class="form-label">
+                                    Inbound Voice Minutes
+                                    <span class="rate-info">($0.0085/min)</span>
+                                </label>
+                                <input type="number" id="inboundVoice" class="form-control" min="0" value="5000">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="outboundVoice" class="form-label">
+                                    Outbound Voice Minutes
+                                    <span class="rate-info">($0.014/min)</span>
+                                </label>
+                                <input type="number" id="outboundVoice" class="form-control" min="0" value="3000">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sms" class="form-label">
+                                    SMS Messages Sent
+                                    <span class="rate-info">($0.0083/msg)</span>
+                                </label>
+                                <input type="number" id="sms" class="form-control" min="0" value="1000">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="whatsapp" class="form-label">
+                                    WhatsApp Messages
+                                    <span class="rate-info">($0.005/msg)</span>
+                                </label>
+                                <input type="number" id="whatsapp" class="form-control" min="0" value="500">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">
+                                    Email Packages
+                                    <span class="rate-info">($19.95/package)</span>
+                                </label>
+                                <input type="number" id="email" class="form-control" min="0" value="1">
+                            </div>
+
+                            <div class="button-group">
+                                <button type="button" id="resetBtn" class="btn btn--secondary">Reset All</button>
+                                <button type="button" id="compareBtn" class="btn btn--outline">Compare Models</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2>Monthly Cost Breakdown</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="total-cost">
+                                <div class="total-amount">$<span id="totalCost">0.00</span></div>
+                                <div class="total-label">Total Monthly Cost</div>
+                            </div>
+
+                            <div class="cost-breakdown">
+                                <div class="breakdown-item">
+                                    <span class="item-label">Platform Cost</span>
+                                    <span class="item-value">$<span id="platformCost">0.00</span></span>
+                                </div>
+                                <div class="breakdown-detail" id="platformDetail">
+                                    <span>10 agents × 160 hours × $1.00</span>
+                                </div>
+
+                                <div class="breakdown-item">
+                                    <span class="item-label">Inbound Voice</span>
+                                    <span class="item-value">$<span id="inboundCost">0.00</span></span>
+                                </div>
+
+                                <div class="breakdown-item">
+                                    <span class="item-label">Outbound Voice</span>
+                                    <span class="item-value">$<span id="outboundCost">0.00</span></span>
+                                </div>
+
+                                <div class="breakdown-item">
+                                    <span class="item-label">SMS Messages</span>
+                                    <span class="item-value">$<span id="smsCost">0.00</span></span>
+                                </div>
+
+                                <div class="breakdown-item">
+                                    <span class="item-label">WhatsApp Messages</span>
+                                    <span class="item-value">$<span id="whatsappCost">0.00</span></span>
+                                </div>
+
+                                <div class="breakdown-item">
+                                    <span class="item-label">Email Packages</span>
+                                    <span class="item-value">$<span id="emailCost">0.00</span></span>
+                                </div>
+
+                                <div class="breakdown-separator"></div>
+                                
+                                <div class="breakdown-item total-network">
+                                    <span class="item-label">Total Network Cost</span>
+                                    <span class="item-value">$<span id="networkCost">0.00</span></span>
+                                </div>
+                            </div>
+
+                            <div class="export-section">
+                                <button type="button" id="exportBtn" class="btn btn--primary btn--sm">Export Summary</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rate Information Panel -->
+                    <div class="card rate-card">
+                        <div class="card__header">
+                            <h3>Current Platform Rates</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="rate-list">
+                                <div class="rate-item">
+                                    <span>Platform (Hourly)</span>
+                                    <span>$1.00/hour</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>Platform (Named User)</span>
+                                    <span>$150.00/month</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>Inbound Voice</span>
+                                    <span>$0.0085/min</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>Outbound Voice</span>
+                                    <span>$0.014/min</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>SMS</span>
+                                    <span>$0.0083/msg</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>WhatsApp</span>
+                                    <span>$0.005/msg</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>Email</span>
+                                    <span>$19.95/package</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Comparison Modal -->
+        <div class="modal hidden" id="compareModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Billing Model Comparison</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="comparison-grid">
+                        <div class="comparison-column">
+                            <h3>Per Active User Hour</h3>
+                            <div class="comparison-cost">$<span id="hourlyTotal">0.00</span>/month</div>
+                            <div class="comparison-detail" id="hourlyBreakdown"></div>
+                        </div>
+                        <div class="comparison-column">
+                            <h3>Per Named User</h3>
+                            <div class="comparison-cost">$<span id="namedTotal">0.00</span>/month</div>
+                            <div class="comparison-detail" id="namedBreakdown"></div>
+                        </div>
+                    </div>
+                    <div class="savings-indicator" id="savingsIndicator"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

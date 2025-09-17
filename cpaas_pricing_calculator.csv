@@ -1,0 +1,26 @@
+Item,Value,Rate_Formula
+BILLING MODEL SELECTION,,
+Selected Model,1,(Enter 1 or 2)
+Model Description,"1=Hourly ($1/hr), 2=Named User ($150/mo)",
+,,
+AGENT INFORMATION,,
+Number of Agents,10,(Enter number)
+Hours per Agent per Month,160,(Only needed for hourly)
+,,
+MONTHLY CHANNEL USAGE,,
+Inbound Voice Minutes,5000,(Enter minutes)
+Outbound Voice Minutes,3000,(Enter minutes)
+SMS Messages Sent,1000,(Enter count)
+WhatsApp Messages,500,(Enter count)
+Email Packages,1,(Enter count)
+,,
+COST BREAKDOWN,,
+Flex Platform Cost,"$1,600.00",10 agents × 160 hours × $1.0
+Inbound Voice Cost,$42.50,5000 × $0.0085
+Outbound Voice Cost,$42.00,3000 × $0.014
+SMS Cost,$8.30,1000 × $0.0083
+WhatsApp Cost,$2.50,500 × $0.005
+Email Cost,$19.95,1 × $19.95
+Total Network Cost,$115.25,Sum of all network costs
+,,
+TOTAL MONTHLY COST,"$1,715.25",Platform Cost + Network Cost
